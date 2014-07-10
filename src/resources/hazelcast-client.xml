@@ -19,19 +19,6 @@
             http://www.hazelcast.com/schema/client-config/hazelcast-client-config-3.3.xsd"
                   xmlns="http://www.hazelcast.com/schema/client-config"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <group>
-        <name>dev</name>
-        <password>dev-pass</password>
-    </group>
-    <network>
-        <cluster-members>
-            <address>127.0.0.1</address>
-        </cluster-members>
-        <smart-routing>true</smart-routing>
-        <redo-operation>true</redo-operation>
-    </network>
-
-    <executor-pool-size>40</executor-pool-size>
 
     <serialization>
         <portable-factories>

@@ -2,14 +2,12 @@
 * HyperLogLog module
 * TreeSet Module
 
-```
 You need to use these hazelcast configuration files or include the corresponding sections to your configuration in order to use the modules. Otherwise Hazelcast will not recognize service names.
-* Server Config: (src/resources/hazelcast.xml)
-* Client Config: (src/resources/hazelcast-client.xml)
-```
+* Server Config: (```src/resources/hazelcast.xml```)
+* Client Config: (```src/resources/hazelcast-client.xml```)
 
 #### HyperLogLog Module:
-HyperLogLog module uses [java-hll](https://github.com/aggregateknowledge/java-hll) that is a Java implementation of HyperLogLog algorithm. Here is a sample usage:
+HyperLogLog module uses [java-hll](https://github.com/aggregateknowledge/java-hll) backend which is a Java implementation of HyperLogLog algorithm. Here is a sample usage:
 ```java
 HazelcastInstance server = Hazelcast.newHazelcastInstance();
 hll = server.getDistributedObject(HyperLogLogService.SERVICE_NAME, "counter");
