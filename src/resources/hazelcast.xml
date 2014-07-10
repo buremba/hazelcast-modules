@@ -1,0 +1,36 @@
+<hazelcast xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.hazelcast.com/schema/config
+                               http://www.hazelcast.com/schema/config/hazelcast-config-3.2.xsd"
+           xmlns="http://www.hazelcast.com/schema/config">
+
+
+    <network>
+        <join>
+            <multicast enabled="true"/>
+        </join>
+    </network>
+
+    <serialization>
+        <data-serializable-factories>
+            <data-serializable-factory factory-id="100">
+                org.rakam.cache.hazelcast.hyperloglog.operations.HyperLogLogSerializerFactory
+            </data-serializable-factory>
+        </data-serializable-factories>
+        <portable-factories>
+            <portable-factory factory-id="100">org.rakam.cache.hazelcast.hyperloglog.client.HyperLogLogPortableFactory
+            </portable-factory>
+        </portable-factories>
+    </serialization>
+
+    <services>
+        <service enabled="true">
+            <name>rakam:hyperLogLogService</name>
+            <class-name>org.rakam.cache.hazelcast.hyperloglog.HyperLogLogService</class-name>
+        </service>
+        <service enabled="true">
+            <name>rakam:treeSetService</name>
+            <class-name>org.rakam.cache.hazelcast.treeset.TreeSetService</class-name>
+        </service>
+    </services>
+
+</hazelcast>
