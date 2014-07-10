@@ -30,9 +30,11 @@ ITreeSet module uses native [TreeSet](http://docs.oracle.com/javase/6/docs/api/j
 HazelcastInstance server = Hazelcast.newHazelcastInstance();
 treeSet = server.getDistributedObject(TreeSetService.SERVICE_NAME, "set");
 treeSet.add("TEST0");
-treeSet.add("TEST1");
 treeSet.add("TEST2");
-long size = treeSet.size();
+treeSet.add("TEST1");
+for(Object item: treeSet) {
+    System.out.println(item);
+}
 ```
 ITreeSet uses Hazelcast Collections so the supported methods are same as ISet.
 
