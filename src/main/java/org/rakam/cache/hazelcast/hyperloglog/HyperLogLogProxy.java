@@ -6,10 +6,7 @@ package org.rakam.cache.hazelcast.hyperloglog;
 
 import com.hazelcast.spi.*;
 import com.hazelcast.util.ExceptionUtil;
-import org.rakam.cache.hazelcast.hyperloglog.operations.AddAllOperation;
-import org.rakam.cache.hazelcast.hyperloglog.operations.AddOperation;
-import org.rakam.cache.hazelcast.hyperloglog.operations.CardinalityOperation;
-import org.rakam.cache.hazelcast.hyperloglog.operations.UnionOperation;
+import org.rakam.cache.hazelcast.hyperloglog.operations.*;
 import org.rakam.util.HLLWrapper;
 
 import java.util.Collection;
@@ -50,13 +47,19 @@ public class HyperLogLogProxy extends AbstractDistributedObject<HyperLogLogServi
         return name;
     }
 
-    public int getPartitionId() {
-        return partitionId;
-    }
-
     @Override
     public long cardinality() {
         return asyncCardinality().getSafely();
+    }
+
+    @Override
+    public void reset() {
+        asyncReset().getSafely();
+    }
+
+    public InternalCompletableFuture<Void> asyncReset() {
+        ResetOperation operation = new ResetOperation(name);
+        return asyncInvoke(operation);
     }
 
     @Override

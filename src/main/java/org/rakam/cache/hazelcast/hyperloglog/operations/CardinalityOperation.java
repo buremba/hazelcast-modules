@@ -1,8 +1,8 @@
-package org.rakam.cache.hazelcast.hyperloglog.operations;
-
 /**
  * Created by buremba on 10/07/14.
  */
+
+package org.rakam.cache.hazelcast.hyperloglog.operations;
 
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
@@ -10,10 +10,6 @@ import org.rakam.cache.hazelcast.hyperloglog.HyperLogLogBaseOperation;
 import org.rakam.util.HLLWrapper;
 
 import java.io.IOException;
-
-/**
- * Created by buremba on 08/07/14.
- */
 
 public class CardinalityOperation extends HyperLogLogBaseOperation {
 

@@ -1,3 +1,7 @@
+/**
+ * Created by buremba on 10/07/14.
+ */
+
 package org.rakam.cache.hazelcast.hyperloglog.operations;
 
 import com.hazelcast.nio.serialization.DataSerializableFactory;
@@ -15,6 +19,8 @@ public final class HyperLogLogSerializerFactory implements DataSerializableFacto
     public static final int UNION = 5;
     public static final int UNION_BACKUP = 6;
     public static final int REPLICATION = 7;
+    public static final int RESET = 8;
+    public static final int RESET_BACKUP = 9;
 
     @Override
     public IdentifiedDataSerializable create(int typeId) {
@@ -22,7 +28,7 @@ public final class HyperLogLogSerializerFactory implements DataSerializableFacto
             case ADD_BACKUP:
                 return new AddBackupOperation();
             case ADD:
-                return new AddOperation();
+                return new ResetOperation();
             case ADD_ALL_BACKUP:
                 return new AddAllBackupOperation();
             case ADD_ALL:
@@ -34,7 +40,7 @@ public final class HyperLogLogSerializerFactory implements DataSerializableFacto
             case UNION:
                 return new UnionOperation();
             case REPLICATION:
-                return new CounterReplicationOperation();
+                return new HyperLogLogReplicationOperation();
             default:
                 return null;
         }

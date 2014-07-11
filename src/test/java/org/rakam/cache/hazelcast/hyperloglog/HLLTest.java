@@ -33,8 +33,6 @@ public class HLLTest {
         client0 = HazelcastClient.newHazelcastClient();
         hllClient = client0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
 
-        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
-        hll1 = server1.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
     }
 
     @AfterClass
@@ -45,14 +43,18 @@ public class HLLTest {
     @Before
     @After
     public void clear() throws IOException {
-        hll0.destroy();
-        hll1.destroy();
+        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+        hll1 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+        hll0.reset();
+        hll1.reset();
     }
 
     @Test
     public void cardinality_testAcrossServers() throws Exception {
-        server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, "0counter");
+        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+        hll1 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
         hll0.add("TEST");
+
 
         assertEquals(1, hll0.cardinality());
         assertEquals(1, hll1.cardinality());
@@ -61,9 +63,12 @@ public class HLLTest {
 
     @Test
     public void destroy_testAcrossServers() throws Exception {
+        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+        hll1 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+
         hll0.add("TEST0");
         hll0.add("TEST1");
-        hll0.destroy();
+        hll0.reset();
         hll0.add("TEST0");
 
         assertEquals(1, hll0.cardinality());
@@ -73,6 +78,8 @@ public class HLLTest {
 
     @Test
     public void addAll_testAcrossServers() throws Exception {
+        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+        hll1 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
 
         ArrayList<String> list = new ArrayList<String>() {{
             add("TEST0");
@@ -89,6 +96,9 @@ public class HLLTest {
 
     @Test
     public void union_testAcrossServers() throws Exception {
+        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+        hll1 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+
         hll0.add("TEST1");
         HLLWrapper hll = new HLLWrapper();
         hll.add("TEST0");
@@ -101,6 +111,8 @@ public class HLLTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void add_whenCalledWithNullFunction() {
+        hll0 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
+
         hll0.add(null);
     }
 

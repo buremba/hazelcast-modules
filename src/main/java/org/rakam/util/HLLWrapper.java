@@ -51,4 +51,8 @@ public class HLLWrapper {
     public byte[] bytes() {
         return hll.toBytes();
     }
+
+    public void reset() {
+        hll = new HLL(13/*log2m*/, 5/*registerWidth*/);
+    }
 }

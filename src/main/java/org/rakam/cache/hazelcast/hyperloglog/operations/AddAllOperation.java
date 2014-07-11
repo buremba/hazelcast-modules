@@ -1,3 +1,7 @@
+/**
+ * Created by buremba on 10/07/14.
+ */
+
 package org.rakam.cache.hazelcast.hyperloglog.operations;
 
 import com.hazelcast.nio.ObjectDataInput;
@@ -10,9 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by buremba on 10/07/14.
- */
 public class AddAllOperation extends HyperLogLogBackupAwareOperation {
 
     private Collection<String> items;

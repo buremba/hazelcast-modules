@@ -46,6 +46,12 @@ public class ClientHyperLogLogProxy extends ClientProxy implements HyperLogLog {
     }
 
     @Override
+    public void reset() {
+        ResetRequest request = new ResetRequest(name);
+        invoke(request);
+    }
+
+    @Override
     public void union(HLLWrapper hll) {
         UnionRequest request = new UnionRequest(name, hll);
         invoke(request);

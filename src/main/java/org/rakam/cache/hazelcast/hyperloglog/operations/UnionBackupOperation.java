@@ -1,3 +1,7 @@
+/**
+ * Created by buremba on 10/07/14.
+ */
+
 package org.rakam.cache.hazelcast.hyperloglog.operations;
 
 import com.hazelcast.nio.ObjectDataInput;
@@ -8,9 +12,7 @@ import org.rakam.util.HLLWrapper;
 
 import java.io.IOException;
 
-/**
- * Created by buremba on 10/07/14.
- */
+
 public class UnionBackupOperation extends HyperLogLogBaseOperation implements BackupOperation {
     private HLLWrapper hll;
 

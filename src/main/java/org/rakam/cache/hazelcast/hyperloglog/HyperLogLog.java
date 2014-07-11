@@ -23,6 +23,8 @@ public interface HyperLogLog extends DistributedObject {
      */
     public long cardinality();
 
+    public void reset();
+
     /**
      * Unions given hll container with the internal one.
      *

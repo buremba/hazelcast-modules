@@ -12,10 +12,6 @@ import org.rakam.util.HLLWrapper;
 
 import java.io.IOException;
 
-/**
- * Created by buremba on 08/07/14.
- */
-
 public class UnionOperation extends HyperLogLogBackupAwareOperation {
 
     private HLLWrapper hll;

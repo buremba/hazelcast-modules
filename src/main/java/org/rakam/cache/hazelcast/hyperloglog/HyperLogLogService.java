@@ -8,7 +8,7 @@ import com.hazelcast.partition.InternalPartitionService;
 import com.hazelcast.partition.MigrationEndpoint;
 import com.hazelcast.spi.*;
 import com.hazelcast.util.ConstructorFunction;
-import org.rakam.cache.hazelcast.hyperloglog.operations.CounterReplicationOperation;
+import org.rakam.cache.hazelcast.hyperloglog.operations.HyperLogLogReplicationOperation;
 import org.rakam.util.HLLWrapper;
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class HyperLogLogService implements ManagedService, RemoteService, Migrat
     public static final String SERVICE_NAME = "rakam:hyperLogLogService";
 
     private NodeEngine nodeEngine;
-    private final ConcurrentMap<String, HLLWrapper> numbers = new ConcurrentHashMap<String, HLLWrapper>();
+    private final ConcurrentMap<String, HLLWrapper> containers = new ConcurrentHashMap<String, HLLWrapper>();
     private final ConstructorFunction<String, HLLWrapper> CountersConstructorFunction =
             new ConstructorFunction<String, HLLWrapper>() {
                 public HLLWrapper createNew(String key) {
@@ -38,7 +38,7 @@ public class HyperLogLogService implements ManagedService, RemoteService, Migrat
     }
 
     public HLLWrapper getHLL(String name) {
-        return getOrPutIfAbsent(numbers, name, CountersConstructorFunction);
+        return getOrPutIfAbsent(containers, name, CountersConstructorFunction);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class HyperLogLogService implements ManagedService, RemoteService, Migrat
 
     @Override
     public void reset() {
-        numbers.clear();
+        containers.clear();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class HyperLogLogService implements ManagedService, RemoteService, Migrat
 
     @Override
     public void destroyDistributedObject(String name) {
-        numbers.remove(name);
+        containers.remove(name);
     }
 
     @Override
@@ -72,19 +72,16 @@ public class HyperLogLogService implements ManagedService, RemoteService, Migrat
 
     @Override
     public Operation prepareReplicationOperation(PartitionReplicationEvent event) {
-        if (event.getReplicaIndex() > 1) {
-            return null;
-        }
 
         Map<String, byte[]> data = new HashMap<String, byte[]>();
         int partitionId = event.getPartitionId();
-        for (String name : numbers.keySet()) {
+        for (String name : containers.keySet()) {
             if (partitionId == getPartitionId(name)) {
-                HLLWrapper number = numbers.get(name);
+                HLLWrapper number = containers.get(name);
                 data.put(name, number.bytes());
             }
         }
-        return data.isEmpty() ? null : new CounterReplicationOperation(data);
+        return data.isEmpty() ? null : new HyperLogLogReplicationOperation(data);
     }
 
     private int getPartitionId(String name) {
@@ -96,24 +93,24 @@ public class HyperLogLogService implements ManagedService, RemoteService, Migrat
     @Override
     public void commitMigration(PartitionMigrationEvent partitionMigrationEvent) {
         if (partitionMigrationEvent.getMigrationEndpoint() == MigrationEndpoint.SOURCE) {
-            removeNumber(partitionMigrationEvent.getPartitionId());
+            removePartition(partitionMigrationEvent.getPartitionId());
         }
     }
 
     @Override
     public void rollbackMigration(PartitionMigrationEvent partitionMigrationEvent) {
         if (partitionMigrationEvent.getMigrationEndpoint() == MigrationEndpoint.DESTINATION) {
-            removeNumber(partitionMigrationEvent.getPartitionId());
+            removePartition(partitionMigrationEvent.getPartitionId());
         }
     }
 
     @Override
     public void clearPartitionReplica(int partitionId) {
-        removeNumber(partitionId);
+        removePartition(partitionId);
     }
 
-    public void removeNumber(int partitionId) {
-        final Iterator<String> iterator = numbers.keySet().iterator();
+    public void removePartition(int partitionId) {
+        final Iterator<String> iterator = containers.keySet().iterator();
         while (iterator.hasNext()) {
             String name = iterator.next();
             if (getPartitionId(name) == partitionId) {

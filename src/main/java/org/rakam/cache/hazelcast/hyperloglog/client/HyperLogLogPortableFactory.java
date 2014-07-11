@@ -14,6 +14,7 @@ public class HyperLogLogPortableFactory implements com.hazelcast.nio.serializati
     public static final int ADD_ALL = 2;
     public static final int CARDINALITY = 4;
     public static final int UNION = 5;
+    public static final int RESET = 6;
 
 
     @Override
@@ -27,6 +28,8 @@ public class HyperLogLogPortableFactory implements com.hazelcast.nio.serializati
                 return new CardinalityRequest();
             case UNION:
                 return new UnionRequest();
+            case RESET:
+                return new ResetRequest();
             default:
                 return null;
         }
