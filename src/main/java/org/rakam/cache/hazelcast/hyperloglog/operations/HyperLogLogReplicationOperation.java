@@ -28,10 +28,10 @@ public class HyperLogLogReplicationOperation extends AbstractOperation implement
 
     @Override
     public void run() throws Exception {
-        HyperLogLogService atomicLongService = getService();
+        HyperLogLogService service = getService();
         for (Map.Entry<String, byte[]> longEntry : migrationData.entrySet()) {
             String name = longEntry.getKey();
-            HLLWrapper number = atomicLongService.getHLL(name);
+            HLLWrapper number = service.getHLL(name);
             byte[] value = longEntry.getValue();
             number.set(value);
         }

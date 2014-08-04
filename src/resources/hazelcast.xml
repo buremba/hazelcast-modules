@@ -8,10 +8,12 @@
             <data-serializable-factory factory-id="100">
                 org.rakam.cache.hazelcast.hyperloglog.operations.HyperLogLogSerializerFactory
             </data-serializable-factory>
+            <data-serializable-factory factory-id="101">
+                org.rakam.cache.hazelcast.treemap.operations.TreeMapSerializerFactory
+            </data-serializable-factory>
         </data-serializable-factories>
         <portable-factories>
-            <portable-factory factory-id="100">org.rakam.cache.hazelcast.hyperloglog.client.HyperLogLogPortableFactory
-            </portable-factory>
+            <portable-factory factory-id="100">org.rakam.cache.hazelcast.hyperloglog.client.HyperLogLogPortableFactory</portable-factory>
         </portable-factories>
     </serialization>
 
@@ -23,6 +25,10 @@
         <service enabled="true">
             <name>rakam:treeSetService</name>
             <class-name>org.rakam.cache.hazelcast.treeset.TreeSetService</class-name>
+        </service>
+        <service enabled="true">
+            <name>rakam:treeMapService</name>
+            <class-name>org.rakam.cache.hazelcast.treemap.TreeMapService</class-name>
         </service>
     </services>
 

@@ -32,7 +32,8 @@ public abstract class ReadRequest extends PartitionClientRequest implements Port
     @Override
     protected int getPartition() {
         ClientEngine clientEngine = getClientEngine();
-        Data key = serializationService.toData(name);
+        //Data key = serializationService.toData(name);
+        Data key = clientEngine.getSerializationService().toData(name);
         return clientEngine.getPartitionService().getPartitionId(key);
     }
 
@@ -54,11 +55,6 @@ public abstract class ReadRequest extends PartitionClientRequest implements Port
     @Override
     public void read(PortableReader reader) throws IOException {
         name = reader.readUTF("n");
-    }
-
-    @Override
-    public String getDistributedObjectName() {
-        return name;
     }
 
     @Override

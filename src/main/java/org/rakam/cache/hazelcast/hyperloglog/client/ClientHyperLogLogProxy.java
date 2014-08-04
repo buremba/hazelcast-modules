@@ -22,6 +22,11 @@ public class ClientHyperLogLogProxy extends ClientProxy implements HyperLogLog {
         this.name = objectId;
     }
 
+    @Override
+    protected void onDestroy() {
+        reset();
+    }
+
 
     protected <T> T invoke(ClientRequest req) {
         return super.invoke(req, getKey());

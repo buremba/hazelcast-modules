@@ -55,7 +55,6 @@ public class HLLTest {
         hll1 = server0.getDistributedObject(HyperLogLogService.SERVICE_NAME, name);
         hll0.add("TEST");
 
-
         assertEquals(1, hll0.cardinality());
         assertEquals(1, hll1.cardinality());
         assertEquals(1, hllClient.cardinality());

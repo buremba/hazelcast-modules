@@ -32,5 +32,7 @@
                        class-name="org.rakam.cache.hazelcast.hyperloglog.client.ClientHyperLogLogProxyFactory"></proxy-factory>
         <proxy-factory service="rakam:treeSetService"
                        class-name="org.rakam.cache.hazelcast.treeset.ClientTreeSetProxyFactory"></proxy-factory>
+        <proxy-factory service="rakam:treeMapService"
+                       class-name="org.rakam.cache.hazelcast.treemap.client.ClientTreeMapProxyFactory"></proxy-factory>
     </proxy-factories>
 </hazelcast-client>

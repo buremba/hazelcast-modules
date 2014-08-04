@@ -14,7 +14,7 @@
     </description>
 
     <properties>
-        <hazelcast.version>3.3-RC2-SNAPSHOT</hazelcast.version>
+        <hazelcast.version>3.2.3</hazelcast.version>
         <junit.version>4.11</junit.version>
     </properties>
 

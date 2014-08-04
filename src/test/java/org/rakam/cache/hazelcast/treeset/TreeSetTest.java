@@ -61,6 +61,26 @@ public class TreeSetTest {
         }
     }
 
+    @Test
+    public void customitem_test() throws Exception {
+
+        Set s = set0;
+        s.add(new OrderedGroupBy("AB"));
+        s.add(new OrderedGroupBy("AC"));
+        s.add(new OrderedGroupBy("AA"));
+        s.add(new OrderedGroupBy("A0"));
+
+        Iterator<Comparable> it = s.iterator();
+        Comparable previous = null;
+        Comparable now;
+        while (it.hasNext()) {
+            now = it.next();
+            if (previous != null)
+                assertTrue(previous.compareTo(now) <= 0);
+            previous = now;
+        }
+    }
+
 
     @Test
     public void client_test() throws Exception {
